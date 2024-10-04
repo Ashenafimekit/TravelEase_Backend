@@ -1,13 +1,21 @@
 const mongoose = require("mongoose");
 
 const bookSchema = mongoose.Schema({
-  fullName: {
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // Reference to User model
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
   phone: {
     type: String,
     required: true,
+  },
+  seatNumber: {
+    type: Number,
   },
   payment: {
     type: String,
@@ -22,7 +30,7 @@ const bookSchema = mongoose.Schema({
     required: true,
   },
   date: {
-    type: String,
+    type: Date,
     required: true,
   },
 });
