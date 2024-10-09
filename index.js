@@ -28,7 +28,7 @@ const port = process.env.PORT
 
 mongoose.connect(mongoURL)
 .then(()=> console.log("monogDB connected"))
-.catch(err => console.log(err))
+.catch(err => console.error('MongoDB connection error:', err));
 
 createDefaultAdmin();
 
