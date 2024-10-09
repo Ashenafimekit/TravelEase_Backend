@@ -15,9 +15,10 @@ const busRoute = require('./routes/busRoute')
 const bookRoute = require('./routes/bookRoute')
 const createDefaultAdmin = require('./createDefaultAdmin'); 
 const mongoURL = process.env.MONGODB_URL
+const port = process.env.PORT
 
 
-mongoose.connect(mongoURL, {useNewUrlParser : true, useUnifiedTopology : true})
+mongoose.connect(mongoURL)
 .then(()=> console.log("monogDB connected"))
 .catch(err => console.log(err))
 
@@ -28,6 +29,6 @@ app.use('/contact',contactRoute)
 app.use('/bus',busRoute)
 app.use('/book',bookRoute)
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log("server is running on port 3000");
 });

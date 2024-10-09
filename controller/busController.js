@@ -37,12 +37,19 @@ exports.getbus = async (req, res) => {
 exports.searchbus = async (req, res) => {
   try {
     const { departure, destination } = req.body;
+
     console.log(departure, destination);
-    const bus = await Bus.find({ departure, destination });
+    const bus = await Bus.find({
+      departure: { $regex: new RegExp(departure, "i") },
+      destination: { $regex: new RegExp(destination, "i") },
+    });
     if (bus.length === 0) {
-      return res.status(404).json( {message :"Bus Not Found"});
+      return res.status(404).json({ message: "Bus Not Found" });
     } else {
-      return res.status(200).json(bus);
+      if(bus.length === 0) {
+        return res.status(200).json({ message: "Bus Not Found" });
+      }
+      return res.status(200).json({ message: `${bus.length} bus available to your destination` });
     }
   } catch (error) {
     console.log("error : ", error);
@@ -52,7 +59,7 @@ exports.searchbus = async (req, res) => {
 
 exports.getbusadmin = async (req, res) => {
   try {
-    console.log("check melos")
+    console.log("check melos");
     const busInfo = await Bus.find();
     return res.status(201).json(busInfo);
   } catch (error) {

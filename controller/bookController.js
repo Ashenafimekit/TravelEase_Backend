@@ -45,6 +45,7 @@ exports.getbook = async (req, res) => {
 
   try {
     let userInfo;
+    console.log("check one")
     if (userRole === "admin") {
       userInfo = await Book.find({ date: { $gte: currentDate } });
     } else {
@@ -53,7 +54,7 @@ exports.getbook = async (req, res) => {
 
     return res.status(201).json(userInfo);
   } catch (error) {
-    console.log(error);
+    console.log("error",error);
     return res.status(500).json({ message: "server Error" });
   }
 };
