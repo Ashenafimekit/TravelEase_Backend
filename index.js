@@ -7,7 +7,15 @@ const app = express();
 
 
 app.use(express.json());
-app.use(cors({origin : "https://travel-easy-lime.vercel.app/"}));
+const allowedOrigins = [
+  'https://travel-easy-lime.vercel.app', 
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+}));
 
 const userRoute = require('./routes/userRoutes')
 const contactRoute = require('./routes/contactRoutes')
