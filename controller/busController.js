@@ -59,7 +59,6 @@ exports.searchbus = async (req, res) => {
 
 exports.getbusadmin = async (req, res) => {
   try {
-    console.log("check melos");
     const busInfo = await Bus.find();
     return res.status(201).json(busInfo);
   } catch (error) {

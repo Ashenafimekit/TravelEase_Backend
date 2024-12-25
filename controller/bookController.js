@@ -3,7 +3,7 @@ const Book = require("../models/book");
 exports.createbook = async (req, res) => {
   const { name, phone, seatNumber, payment, departure, destination, date } =
     req.body;
-  console.log(name, phone, seatNumber, payment, departure, destination, date);
+  //console.log(name, phone, seatNumber, payment, departure, destination, date);
   const userId = req.user.id;
   try {
     const bookInfo = new Book({
@@ -45,19 +45,50 @@ exports.getbook = async (req, res) => {
 
   try {
     let userInfo;
-    console.log("check one")
     if (userRole === "admin") {
-      userInfo = await Book.find({ date: { $gte: currentDate } });
+      // userInfo = await Book.find({ date: { $gte: currentDate } });
+      userInfo = await Book.find();
     } else {
       userInfo = await Book.find({ userId, date: { $gte: currentDate } });
     }
-
     return res.status(201).json(userInfo);
   } catch (error) {
-    console.log("error",error);
+    console.log("error", error);
     return res.status(500).json({ message: "server Error" });
   }
 };
+
+exports.getbookStats = async (req, res) =>{
+  const {date} = req.body;
+  //console.log("date : ", date); 
+  const [day, month, year] = date.split("/");
+  const dateObject = new Date(`${year}-${month}-${day}`);
+  //console.log(dateObject);
+
+  try {
+    bookStats = await Book.find({date})
+    //console.log("bookStats : ", bookStats); 
+    res.status(200).json({success : true, bookStats: bookStats});
+  } catch (error) {
+    console.log("error : ", error);
+  }
+}
+
+exports.getbookStats2 = async (req, res) =>{
+  const {destination, date} = req.body;
+  //console.log("destination and date : ", date, destination); 
+  const [day, month, year] = date.split("/");
+  const dateObject = new Date(`${year}-${month}-${day}`);
+  //console.log(dateObject);
+
+  try {
+    bookStats = await Book.find({date, destination: { $regex: new RegExp(destination, 'i') }})
+    //console.log("bookStats : ", bookStats); 
+    res.status(200).json({success : true, bookStats: bookStats});
+  } catch (error) {
+    console.log("error : ", error);
+  }
+}
 
 exports.getbookhistory = async (req, res) => {
   const currentDate = new Date();
@@ -94,24 +125,27 @@ exports.takenseat = async (req, res) => {
 
 exports.cancel = async (req, res) => {
   const { departure, destination, seatNumber, date } = req.body;
-  console.log(departure, destination, seatNumber, date);
-  console.log("type of seat number ", typeof seatNumber);
   const formatedSeatNumber = seatNumber.toString();
-  console.log("type of seat number ", typeof formatedSeatNumber);
+  const [day, month, year] = date.split("/");
+  const dateObject = new Date(`${year}-${month}-${day}`);
+  //console.log(dateObject);
 
   try {
     const deletedBooking = await Book.findOneAndDelete({
       departure: departure,
       destination: destination,
       seatNumber: formatedSeatNumber,
-      date: date,
+      date: dateObject,
     });
     if (!deletedBooking) {
       return res
         .status(404)
         .json({ message: "Booking not found or already canceled" });
     }
-    return res.status(201).json({ message: "successfully cancelled" });
+    return res.status(201).json({
+      message: "successfully cancelled",
+      updatedBooking: deletedBooking,
+    });
   } catch (error) {
     return res.status(500).json({ message: "server error" });
   }

@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 const allowedOrigins = [
   'https://travel-easy-lime.vercel.app', 
+  'http://localhost:5173'
 ];
 
 app.use(cors({
