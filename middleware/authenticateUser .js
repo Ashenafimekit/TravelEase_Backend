@@ -7,15 +7,14 @@ const authenticateUser = (req, res, next) => {
   if (!authHeader) {
     return res
       .status(401)
-      .json({ message: "Authorization denied: No token provided" });
+      .json({ message: "Please Login" });
   }
 
-  console.log("Auth Header:", authHeader); 
-  const token = authHeader.replace("Bearer ", ""); // Remove the "Bearer " part
-  console.log("Extracted Token:", token); 
+  //console.log("Auth Header:", authHeader); 
+  const token = authHeader.replace("Bearer ", ""); 
+  //console.log("Extracted Token:", token); 
 
   try {
-    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // Attach the decoded user information to req.user
     next(); 

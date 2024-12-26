@@ -3,7 +3,7 @@ require("dotenv").config()
 
 const authMiddleware = (requiredRole) => {
     return (req, res, next) => {
-      console.log("Auth Middleware Triggered"); 
+      //console.log("Auth Middleware Triggered"); 
       const token = req.headers.authorization?.split(" ")[1];
   
       if (!token) {
@@ -13,7 +13,7 @@ const authMiddleware = (requiredRole) => {
   
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Decoded Token:", decoded); 
+        //console.log("Decoded Token:", decoded); 
   
         if (requiredRole && decoded.role !== requiredRole) {
           console.log("Access denied for role:", decoded.role);
