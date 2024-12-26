@@ -2,7 +2,7 @@ const Bus = require("../models/Bus");
 
 exports.addbus = async (req, res) => {
   const { departure, destination, date, time, price } = req.body;
-  console.log({ departure, destination, date, time, price });
+  //console.log({ departure, destination, date, time, price });
 
   try {
     const busInfo = new Bus({ departure, destination, date, time, price });
@@ -14,7 +14,7 @@ exports.addbus = async (req, res) => {
 };
 
 exports.getbus = async (req, res) => {
-  const formatDate = (date) => {
+    const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
@@ -38,7 +38,7 @@ exports.searchbus = async (req, res) => {
   try {
     const { departure, destination } = req.body;
 
-    console.log(departure, destination);
+   // console.log(departure, destination);
     const bus = await Bus.find({
       departure: { $regex: new RegExp(departure, "i") },
       destination: { $regex: new RegExp(destination, "i") },
@@ -68,7 +68,7 @@ exports.getbusadmin = async (req, res) => {
 
 exports.deletebus = async (req, res) => {
   const { departure, destination, date, time, price } = req.body;
-  console.log(departure, destination, date, time, price);
+  //console.log(departure, destination, date, time, price);
 
   try {
     const deletedBus = await Bus.findOneAndDelete({
