@@ -25,11 +25,13 @@ exports.createbook = async (req, res) => {
 
     if (takenSeats.includes(seatNumber)) {
       return res.status(400).json({ message: "Seat Number is taken" });
+    }else if (seatNumber > 52) {
+      return res.status(400).json({ message: "Seat Number must below 52" });
     } else {
       await bookInfo.save();
       return res.status(201).json({
         message:
-          "booked successfully if you want to book another ticket enter name phone and payement option",
+          "Booked successfully",
       });
     }
   } catch (error) {
